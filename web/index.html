@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html ng-app="crudFichas">
+    <head>
+        <title>Crud Fichas</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.1/angular.min.js"></script>
+        <script src="js/app.js"></script>
+    </head>
+    <body ng-controller="Controller">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+            <a class="navbar-brand" href="#">Crud de Fichas</a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" ng-click="ativaAba('abaFicha');" href="#">Fichas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" ng-click="ativaAba('abaAnimal');" href="#">Animais</a>
+                </li>
+            </ul>
+        </nav>
+
+        <br><br><br><br>
+
+        <div class="container col-sm-10" ng-show="abaFicha">
+            <div class="card" >
+                <div class="card-header">Filtro</div>
+                <div class="card-body">
+                    <button class="btn bg-warning btn-xs col-sm-2" ng-click="filtroPorId = true;" ng-hide="filtroPorId" href="#" role="button">Filtrar por Id</button>
+                    <button class="btn bg-warning col-lg-2" ng-click="filtroPorId = false;" ng-show="filtroPorId" href="#" role="button">Filtrar por Data</button>
+                    <label ng-hide="filtroPorId">Data Inicio</label> <input ng-hide="filtroPorId" ng-model="dataInicio" type="date">
+                    <label ng-hide="filtroPorId">Data Fim</label> <input ng-hide="filtroPorId" ng-model="dataFim" type="date">
+                    <label ng-show="filtroPorId">Id</label> <input ng-show="filtroPorId" ng-model="id" type="number">
+                    <button class="btn btn-primary btn-xs col-2" ng-click="carregarFichas();"  href="#" role="button">Filtrar</button>
+                    <button class="btn bg-success btn-xs col-sm-2" ng-click="novaFicha()" href="#" role="button">Novo</button>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="card" ng-show="formularioAtivo">
+                <div class="card-header">{{nomeRotuloFormulario}}</div>
+                <div class="card-body">
+                    <label>Id</label>
+                    <input class="form-control" type="text" ng-disabled="true" ng-model="frmInclusao.id">                  
+                    <label>Data</label>
+                    <input class="form-control" type="text" ng-disabled="!dataAtiva" ng-model="frmInclusao.dataRegistro">
+                    <label>Ativo</label>
+                    <input type="checkbox" ng-model="frmInclusao.status">
+                    <br>
+                    <label>Observação</label>
+                    <input class="form-control" type="text" ng-model="frmInclusao.observacao">
+                    <label >Animais</label>
+                    <select class="form-control" multiple="multiple" ng-model="frmInclusao.animais">
+                        <option ng-repeat="animal in listaAnimais">{{animal.nome}}</option>
+                    </select>
+                    <br>
+                    <button class="btn btn-default ls-btn-sm" ng-click="salvarFicha();" href="#" role="button">Salvar</button>
+                    <button class="btn btn-default ls-btn-sm" ng-click="formularioAtivo = false;" href="#" role="button">Cancelar</button>
+                </div>
+            </div>
+
+            <br ng-show="formularioAtivo">
+
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>DATA</th>
+                        <th>STATUS</th>
+                        <th>AÇÃO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="ficha in listaFichas">
+                        <td>{{ficha.id}}</td>
+                        <td>{{ficha.dataRegistro}}</td>
+                        <td>{{ficha.status}}</td>
+                        <td>
+                            <button class="btn btn-info ls-btn-sm" ng-click="editarFicha(ficha);" href="#" role="button">Editar</button>
+                            <button class="btn btn-danger ls-btn-sm" ng-click="excluirFicha(ficha);" href="#" role="button">Excluir</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container col-sm-4 table-striped" ng-show="abaAnimal">
+            <div class="card" ng-show="formularioAtivoAnimal">
+                <div class="card-header">{{nomeRotuloFormularioAnimal}}</div>
+                <div class="card-body">
+                    <label>Id</label>
+                    <input class="form-control" type="text" ng-disabled="true" ng-model="frmInclusaoAnimal.id">
+                    <label>Nome</label>
+                    <input class="form-control" type="text" ng-model="frmInclusaoAnimal.nome">
+                    <br>
+                    <button class="btn btn-default ls-btn-sm" ng-click="salvarAnimal();" href="#" role="button">Salvar</button>
+                    <button class="btn btn-default ls-btn-sm" ng-click="formularioAtivoAnimal = false;" href="#" role="button">Cancelar</button>
+                </div>
+            </div>
+
+            <button class="btn bg-success btn-xs col-sm-3" ng-hide="formularioAtivoAnimal" ng-click="novoAnimal()" href="#" role="button">Novo</button>
+            <br ng-hide="formularioAtivoAnimal">
+            <br>
+            <table class="table col-sm-1">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>NOME</th>
+                        <th>AÇÃO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="animal in listaAnimais">
+                        <td>{{animal.id}}</td>
+                        <td>{{animal.nome}}</td>
+                        <td>
+                            <button class="btn btn-info ls-btn-sm" ng-click="editarAnimal(animal);" href="#" role="button">Editar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
