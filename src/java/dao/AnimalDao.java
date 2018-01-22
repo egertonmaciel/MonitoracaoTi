@@ -62,4 +62,20 @@ public class AnimalDao {
             FabricaConexao.fecharConexao();
         }
     }
+
+    public void deletar(Animal animal) {
+        String sql = "delete from animal\n"
+                + "where id = ?";
+        try {
+            Connection conexao = FabricaConexao.getConexao();
+            PreparedStatement ps = conexao.prepareStatement(sql);
+            ps.setString(1, animal.getNome());
+            ps.setInt(1, animal.getId());
+            ps.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(FichaDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            FabricaConexao.fecharConexao();
+        }
+    }
 }

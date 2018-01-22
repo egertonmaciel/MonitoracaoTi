@@ -1,4 +1,4 @@
-package resource;
+package service;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
@@ -13,7 +13,8 @@ public class ApplicationConfig extends Application {
         return resources;
     }
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(resource.CrudFichasResource.class);
+        resources.add(service.AnimalService.class);
+        resources.add(service.CrudFichasService.class);
     }
     
 }

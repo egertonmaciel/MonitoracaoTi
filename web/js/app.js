@@ -1,5 +1,4 @@
-angular
-        .module("crudFichas", []).controller("Controller", function ($scope, $http) {
+angular.module("crudFichas", []).controller("Controller", function ($scope, $http) {
     $scope.hoje = (1900 + new Date().getYear()) + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate();
     $scope.dataInicio = $scope.hoje;
     $scope.dataFim = $scope.hoje;
@@ -104,7 +103,7 @@ angular
 
     $scope.salvarAnimal = function () {
         $scope.url = '/CrudFichas/webresources/CrudFichas/salvarAnimal/';
-        $http.post($scope.url, $scope.frmInclusaoAnimal);
+        $scope.retorno = $http.post($scope.url, $scope.frmInclusaoAnimal);
         $scope.carregarAnimais();
         $scope.formularioAtivoAnimal = false;
     };

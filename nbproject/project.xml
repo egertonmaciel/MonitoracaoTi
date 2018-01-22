@@ -24,11 +24,9 @@
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>
-                <root id="src.dir" name="Pacotes de Códigos-fonte"/>
+                <root id="src.dir"/>
             </source-roots>
-            <test-roots>
-                <root id="test.src.dir" name="Pacotes de Teste"/>
-            </test-roots>
+            <test-roots/>
         </data>
     </configuration>
 </project>

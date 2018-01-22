@@ -1,4 +1,4 @@
-package resource;
+package service;
 
 import com.google.gson.Gson;
 import dao.AnimalDao;
@@ -16,12 +16,12 @@ import model.Animal;
 import model.Ficha;
 
 @Path("CrudFichas")
-public class CrudFichasResource {
+public class CrudFichasService {
 
     @Context
     private UriInfo context;
 
-    public CrudFichasResource() {
+    public CrudFichasService() {
     }
 
     @GET
