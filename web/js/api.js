@@ -12,6 +12,7 @@ angular.module("crudFichasApi").factory("api", function ($scope, $http) {
             },
             getAll: function () {
                 return $http.post("./animal/getAll");
+                
             }
         }
     }
