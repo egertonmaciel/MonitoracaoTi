@@ -89,7 +89,7 @@
             </table>
         </div>
 
-        <div ng-controller="api" class="container col-sm-4 table-striped" ng-show="abaAnimal">
+        <div class="container col-sm-4 table-striped" ng-show="abaAnimal">
             <div class="card" ng-show="formularioAtivoAnimal">
                 <div class="card-header">{{nomeRotuloFormularioAnimal}}</div>
                 <div class="card-body">
@@ -120,7 +120,7 @@
                         <td>{{animal.nome}}</td>
                         <td>
                             <button class="btn btn-info ls-btn-sm" ng-click="editarAnimal(animal);" href="#" role="button">Editar</button>
-                            <button class="btn btn-danger ls-btn-sm" ng-click="editarAnimal(animal);" href="#" role="button">Excluir</button>
+                            <button class="btn btn-danger ls-btn-sm" ng-click="deletarAnimal(animal);" href="#" role="button">Excluir</button>
                         </td>
                     </tr>
                 </tbody>

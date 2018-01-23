@@ -92,6 +92,7 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
             console.log(resposta);
             $scope.listaAnimais = resposta.data;
         });
+        $scope.formularioAtivoAnimal = false;
     };
 
     $scope.zeraFrmInclusaoAnimal = function () {
@@ -103,9 +104,12 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
 
     $scope.salvarAnimal = function () {
         $scope.url = '/CrudFichas/webresources/CrudFichas/salvarAnimal/';
-        $scope.retorno = $http.post($scope.url, $scope.frmInclusaoAnimal);
-        $scope.carregarAnimais();
-        $scope.formularioAtivoAnimal = false;
+        $http.post($scope.url, $scope.frmInclusaoAnimal, $scope.retorno).then(function (response) {
+            $scope.carregarAnimais();
+            console.log("sucesso");
+        }, function (respose) {
+            console.log("falha");
+        });
     };
 
     $scope.editarAnimal = function (animal) {
@@ -113,6 +117,17 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
         $scope.nomeRotuloFormularioAnimal = 'Editar Animal';
         $scope.frmInclusaoAnimal.id = animal.id;
         $scope.frmInclusaoAnimal.nome = animal.nome;
+    };
+
+    $scope.deletarAnimal = function (animal) {
+        $scope.url = '/CrudFichas/webresources/CrudFichas/deletarAnimal/';
+        $http.post($scope.url, animal, $scope.retorno).then(
+                function (response) {
+                    $scope.carregarAnimais();
+                    console.log("sucesso");
+                }, function (respose) {
+            console.log("falha");
+        });
     };
 
     $scope.novoAnimal = function () {

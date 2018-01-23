@@ -6,6 +6,7 @@ import dao.FichaDao;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -79,6 +80,16 @@ public class CrudFichasService {
         } else {
             animalDao.salvar(a);
         }
+    }
+
+    @POST
+    @Consumes("application/json")
+    @Path("deletarAnimal/")
+    public void postJsonAnimalDeletar(String animal) {
+        Gson g = new Gson();
+        AnimalDao animalDao = new AnimalDao();
+        Animal a = g.fromJson(animal, Animal.class);
+        animalDao.deletar(a);
     }
 
     @GET
