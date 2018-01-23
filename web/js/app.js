@@ -48,9 +48,13 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
 
     $scope.salvarFicha = function () {
         $scope.url = '/CrudFichas/webresources/CrudFichas/salvarFicha/';
-        $http.post($scope.url, $scope.frmInclusao);
-        $scope.formularioAtivo = false;
-        $scope.carregarFichas();
+        $http.post($scope.url, $scope.frmInclusao).then(function (response) {
+            $scope.formularioAtivo = false;
+            $scope.carregarFichas();
+        }, function (respose) {
+            $scope.formularioAtivo = false;
+            $scope.carregarFichas();
+        });
     };
 
     $scope.excluirFicha = function (ficha) {
