@@ -1,7 +1,7 @@
 angular.module("crudFichas", []).controller("Controller", function ($scope, $http) {
     $scope.hoje = (1900 + new Date().getYear()) + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate();
-    $scope.dataInicio = $scope.hoje;
-    $scope.dataFim = $scope.hoje;
+    $scope.dataInicio;
+    $scope.dataFim;
     $scope.id = '';
     $scope.nomeRotuloFormulario;
     $scope.nomeRotuloFormularioAnimal;
@@ -32,18 +32,30 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
     };
 
     $scope.carregarFichas = function () {
-        $scope.url = '/CrudFichas/webresources/CrudFichas/fichasPorData/' + $scope.dataInicio + ' 00:00:00/' + $scope.dataFim + ' 23:59:59';
+        $scope.inicio = '0';
+        $scope.fim = '0';
+        if ($scope.dataInicio) {
+            $scope.inicio = $scope.dataInicio + ' 00:00:00';
+        }
+        if ($scope.dataFim) {
+            $scope.fim = $scope.dataFim + ' 23:59:59';
+        }
+
+        console.log($scope.dataInicio);
+        console.log($scope.dataFim);
+        $scope.url = '/CrudFichas/webresources/CrudFichas/fichasPorData/' + $scope.inicio + '/' + $scope.fim;
         if ($scope.filtroPorId) {
             $scope.url = '/CrudFichas/webresources/CrudFichas/fichaPorId/' + $scope.id;
         }
-        console.log($scope.url);
+//        console.log($scope.url);
         $http({
             url: $scope.url,
             method: 'GET'
         }).then(function (resposta) {
-            console.log(resposta);
+//            console.log(resposta);
             $scope.listaFichas = resposta.data;
         });
+        $scope.formularioAtivo = false;
     };
 
     $scope.salvarFicha = function () {
@@ -93,7 +105,7 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
             url: '/CrudFichas/webresources/CrudFichas/animais/',
             method: 'GET'
         }).then(function (resposta) {
-            console.log(resposta);
+//            console.log(resposta);
             $scope.listaAnimais = resposta.data;
         });
         $scope.formularioAtivoAnimal = false;

@@ -14,11 +14,35 @@ public class FichaDao {
 
     public ArrayList<Ficha> pesquisar(String dataInicial, String dataFinal) {
         ArrayList<Ficha> fichas = new ArrayList<>();
+        String sql;
+
+        //valida filtros utilizados
+        if (dataInicial.equals("0") && dataFinal.equals("0")) {//não selecionou nenhuma data
+            sql = "select * from ficha";
+        } else if (dataInicial.equals("0")) {// selecionou apenas a data final
+            sql = "select * from ficha where dt_cadastro < ?";
+        } else if (dataFinal.equals("0")) {//selecionou apenas a data inicial
+            sql = "select * from ficha where dt_cadastro > ?";
+        } else {//selecionou todas as datas
+            sql = "select * from ficha where dt_cadastro between ? and ?";
+        }
+
         try {
             Connection conexao = FabricaConexao.getConexao();
-            PreparedStatement ps = conexao.prepareStatement("select * from ficha where dt_cadastro between ? and ?");
-            ps.setString(1, dataInicial);
-            ps.setString(2, dataFinal);
+            PreparedStatement ps = conexao.prepareStatement(sql);
+
+            //valida filtros utilizados
+            if (dataInicial.equals("0") && dataFinal.equals("0")) {//não selecionou nenhuma data
+                // nao adiciona ps
+            } else if (dataInicial.equals("0")) {// selecionou apenas a data final
+                ps.setString(1, dataFinal);
+            } else if (dataFinal.equals("0")) {//selecionou apenas a data inicial
+                ps.setString(1, dataInicial);
+            } else {//selecionou todas as datas
+                ps.setString(1, dataInicial);
+                ps.setString(2, dataFinal);
+            }
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Ficha ficha = new Ficha();
@@ -97,6 +121,7 @@ public class FichaDao {
         } finally {
             FabricaConexao.fecharConexao();
         }
+        atualizaAnimais(ficha);
     }
 
     public ArrayList<Integer> getIdAnimais(ArrayList<String> nomes) {
@@ -158,9 +183,13 @@ public class FichaDao {
         } finally {
             FabricaConexao.fecharConexao();
         }
+        atualizaAnimais(ficha);
 
+    }
+
+    private void atualizaAnimais(Ficha ficha) {
         //detete
-        sqlFicha = "delete from animal_ficha where id_ficha = ?";
+        String sqlFicha = "delete from animal_ficha where id_ficha = ?";
         try {
             Connection conexao = FabricaConexao.getConexao();
             PreparedStatement ps = conexao.prepareStatement(sqlFicha);
