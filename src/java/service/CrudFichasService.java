@@ -27,20 +27,11 @@ public class CrudFichasService {
 
     @GET
     @Produces("application/json")
-    @Path("fichasPorData/{dataInicial}/{dataFinal}")
-    public String getJsonFichas(@PathParam("dataInicial") String dataInicial, @PathParam("dataFinal") String dataFinal) {
+    @Path("fichas/{id}/{dataInicial}/{dataFinal}")
+    public String getJsonFichas(@PathParam("id") int id, @PathParam("dataInicial") String dataInicial, @PathParam("dataFinal") String dataFinal) {
         Gson g = new Gson();
         FichaDao fichas = new FichaDao();
-        return g.toJson(fichas.pesquisar(dataInicial, dataFinal));
-    }
-
-    @GET
-    @Produces("application/json")
-    @Path("fichaPorId/{id}")
-    public String getJsonFicha(@PathParam("id") int id) {
-        Gson g = new Gson();
-        FichaDao fichas = new FichaDao();
-        return g.toJson(fichas.pesquisar(id));
+        return g.toJson(fichas.pesquisar(id, dataInicial, dataFinal));
     }
 
     @GET

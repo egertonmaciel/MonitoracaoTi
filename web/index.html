@@ -72,6 +72,7 @@
                         <th>ID</th>
                         <th>DATA</th>
                         <th>STATUS</th>
+                        <th>ANIMAIS</th>
                         <th>AÇÃO</th>
                     </tr>
                 </thead>
@@ -80,6 +81,7 @@
                         <td>{{ficha.id}}</td>
                         <td>{{ficha.dataRegistro}}</td>
                         <td>{{ficha.status}}</td>
+                        <td>{{ficha.animais.length}}</td>
                         <td>
                             <button class="btn btn-info ls-btn-sm" ng-click="editarFicha(ficha);" href="#" role="button">Editar</button>
                             <button class="btn btn-danger ls-btn-sm" ng-click="excluirFicha(ficha);" href="#" role="button">Excluir</button>

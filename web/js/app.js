@@ -26,12 +26,14 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
             "status": true,
             "observacao": "",
             "animais": [{
+                    "id": "",
                     "nome": ""}
             ]
         };
     };
 
     $scope.carregarFichas = function () {
+        $scope.idFiltro = 0;
         $scope.inicio = '0';
         $scope.fim = '0';
         if ($scope.dataInicio) {
@@ -41,18 +43,22 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
             $scope.fim = $scope.dataFim + ' 23:59:59';
         }
 
-        console.log($scope.dataInicio);
-        console.log($scope.dataFim);
-        $scope.url = '/CrudFichas/webresources/CrudFichas/fichasPorData/' + $scope.inicio + '/' + $scope.fim;
         if ($scope.filtroPorId) {
-            $scope.url = '/CrudFichas/webresources/CrudFichas/fichaPorId/' + $scope.id;
+            $scope.idFiltro = $scope.id;
         }
+
+
+
+        $scope.url = '/CrudFichas/webresources/CrudFichas/fichas/' + $scope.idFiltro + '/' + $scope.inicio + '/' + $scope.fim;
+//        if ($scope.filtroPorId) {
+//            $scope.url = '/CrudFichas/webresources/CrudFichas/fichaPorId/' + $scope.id;
+//        }
 //        console.log($scope.url);
         $http({
             url: $scope.url,
             method: 'GET'
         }).then(function (resposta) {
-//            console.log(resposta);
+            console.log(resposta.data);
             $scope.listaFichas = resposta.data;
         });
         $scope.formularioAtivo = false;
@@ -61,6 +67,7 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
     $scope.salvarFicha = function () {
         $scope.url = '/CrudFichas/webresources/CrudFichas/salvarFicha/';
         $http.post($scope.url, $scope.frmInclusao).then(function (response) {
+            console.log($scope.frmInclusao);
             $scope.formularioAtivo = false;
             $scope.carregarFichas();
         }, function (respose) {

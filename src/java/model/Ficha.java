@@ -8,8 +8,8 @@ public class Ficha {
     String dataRegistro;
     boolean status;
     String observacao;
-//    ArrayList<Animal> animais;
-    ArrayList<String> animais;
+    ArrayList<Animal> animais;
+//    ArrayList<String> animais;
 
     public Ficha() {
     }
@@ -46,11 +46,13 @@ public class Ficha {
         this.observacao = observacao;
     }
 
-    public ArrayList<String> getAnimais() {
+    public ArrayList<Animal> getAnimais() {
         return animais;
     }
 
-    public void setAnimais(ArrayList<String> animais) {
+    public void setAnimais(ArrayList<Animal> animais) {
         this.animais = animais;
     }
+
+    
 }

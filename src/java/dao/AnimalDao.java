@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Animal;
+import model.Ficha;
 import util.FabricaConexao;
 
 public class AnimalDao {
@@ -27,7 +28,7 @@ public class AnimalDao {
         } catch (SQLException ex) {
             Logger.getLogger(AnimalDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            FabricaConexao.fecharConexao();
+            //FabricaConexao.fecharConexao();
         }
         return animais;
     }
@@ -41,7 +42,7 @@ public class AnimalDao {
         } catch (SQLException ex) {
             Logger.getLogger(AnimalDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            FabricaConexao.fecharConexao();
+            //FabricaConexao.fecharConexao();
         }
     }
 
@@ -57,9 +58,9 @@ public class AnimalDao {
             ps.setInt(2, animal.getId());
             ps.execute();
         } catch (SQLException ex) {
-            Logger.getLogger(FichaDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AnimalDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            FabricaConexao.fecharConexao();
+            //FabricaConexao.fecharConexao();
         }
     }
 
@@ -73,9 +74,71 @@ public class AnimalDao {
             ps.setInt(1, animal.getId());
             ps.execute();
         } catch (SQLException ex) {
-            Logger.getLogger(FichaDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AnimalDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            FabricaConexao.fecharConexao();
+            //FabricaConexao.fecharConexao();
         }
     }
+
+    public static ArrayList<Animal> getAnimaisPorFicha(Ficha ficha) {
+        ArrayList<Animal> animais = new ArrayList<>();
+
+        String sql = "select distinct a.*\n"
+                + "from animal a\n"
+                + "join animal_ficha af on af.id_animal = a.id\n"
+                + "where af.id_ficha = ?;";
+
+        try {
+            Connection conexao = FabricaConexao.getConexao();
+            PreparedStatement ps = conexao.prepareStatement(sql);
+//            ps.setInt(ficha.getId(), 1);
+            ps.setInt(1,ficha.getId());
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Animal animal = new Animal();
+                animal.setId(rs.getInt("id"));
+                animal.setNome(rs.getString("nome"));
+                animais.add(animal);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AnimalDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            //FabricaConexao.fecharConexao();
+        }
+        return animais;
+    }
+
+    public static void setAnimaisPorFicha(Ficha ficha) {
+        // delete
+        String sqlFicha = "delete from animal_ficha where id_ficha = ?";
+        try {
+            Connection conexao = FabricaConexao.getConexao();
+            PreparedStatement ps = conexao.prepareStatement(sqlFicha);
+            ps.setInt(1, ficha.getId());
+            ps.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(AnimalDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            //FabricaConexao.fecharConexao();
+        }
+        
+        //insert
+        ArrayList<Animal> animais = ficha.getAnimais();
+        for (Animal animal : animais) {
+            sqlFicha = "insert into animal_ficha values (?,?)";
+            try {
+                Connection conexao = FabricaConexao.getConexao();
+                PreparedStatement ps = conexao.prepareStatement(sqlFicha);
+                ps.setInt(1, animal.getId());
+                ps.setInt(2, ficha.getId());
+                ps.execute();
+            } catch (SQLException ex) {
+                Logger.getLogger(AnimalDao.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                //FabricaConexao.fecharConexao();
+            }
+        }
+    }
+
 }
