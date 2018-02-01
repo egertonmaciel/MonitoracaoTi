@@ -7,12 +7,22 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
     $scope.nomeRotuloFormularioAnimal;
     $scope.listaFichas = [];
     $scope.listaAnimais = [];
+    $scope.animalSelecionado = {"id": 0, "nome": ""};
     $scope.filtroPorId = false;
     $scope.formularioAtivo = false;
     $scope.formularioEditarAtivo = false;
     $scope.formularioAtivoAnimal = false;
     $scope.checkAtivo = true;
     $scope.dataAtiva = true;
+
+    $scope.data = {
+        model: null,
+        availableOptions: [
+            {value: {nome: 'Galinha', id: 3}},
+            {value: {nome: 'Galinha2', id: 4}}
+        ]
+    };
+
 
     $scope.ativaAba = function (aba) {
         $scope.abaFicha = (aba === 'abaFicha');
@@ -25,9 +35,11 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
             "dataRegistro": "",
             "status": true,
             "observacao": "",
-            "animais": [{
-                    "id": "",
-                    "nome": ""}
+            "animais": [
+                {
+                    "id": 0,
+                    "nome": ""
+                }
             ]
         };
     };
@@ -66,13 +78,14 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
 
     $scope.salvarFicha = function () {
         $scope.url = '/CrudFichas/webresources/CrudFichas/salvarFicha/';
+        console.log($scope.frmInclusao);
+        console.log($scope.frmInclusao.animais);
         $http.post($scope.url, $scope.frmInclusao).then(function (response) {
-            console.log($scope.frmInclusao);
             $scope.formularioAtivo = false;
             $scope.carregarFichas();
         }, function (respose) {
-            $scope.formularioAtivo = false;
-            $scope.carregarFichas();
+//            $scope.formularioAtivo = false;
+//            $scope.carregarFichas();
         });
     };
 
@@ -97,6 +110,7 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
         $scope.frmInclusao.observacao = ficha.observacao;
         $scope.frmInclusao.animais = ficha.animais;
         console.log($scope.frmInclusao);
+        console.log($scope.frmInclusao.animais);
     };
 
     $scope.novaFicha = function () {
