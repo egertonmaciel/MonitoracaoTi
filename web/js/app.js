@@ -109,6 +109,7 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
         $scope.frmInclusao.status = ficha.status;
         $scope.frmInclusao.observacao = ficha.observacao;
         $scope.frmInclusao.animais = ficha.animais;
+        $scope.data = { selected: 'Mula' };
         console.log($scope.frmInclusao);
         console.log($scope.frmInclusao.animais);
     };
