@@ -109,9 +109,33 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
         $scope.frmInclusao.status = ficha.status;
         $scope.frmInclusao.observacao = ficha.observacao;
         $scope.frmInclusao.animais = ficha.animais;
-        $scope.data = { selected: 'Mula' };
+
+        $scope.data = {selected: 'Mula'};
         console.log($scope.frmInclusao);
         console.log($scope.frmInclusao.animais);
+
+        $scope.values = [
+            17,
+            21
+        ];
+
+        $scope.valuess = [
+            {
+                "id": 21,
+                "name": "Mula"
+            },
+            {
+                "id": 22,
+                "name": "asdfas"
+            }
+        ];
+        $scope.selectedValues = {id: 2, name: 'two'};
+
+
+
+
+
+
     };
 
     $scope.novaFicha = function () {

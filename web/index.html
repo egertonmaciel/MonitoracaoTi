@@ -72,10 +72,20 @@
                                             <option ng-repeat="animal in listaAnimais" ng-value="animal" ng-selected="{{true}}" >{{animal.nome}}</option>
                                         </select>-->
 
-                    <select ng-model="data.selected" ng-options="animal.nome as animal.nome for animal in listaAnimais">
-                    </select>
+<!--                    <select id="animais" multiple ng-model="frmInclusao.animais" ng-options="animal as animal.nome for animal in listaAnimais">
+                    </select>-->
                     
+                    <select multiple ng-model="frmInclusao.animais" ng-options="animal.id as animal.nome for animal in listaAnimais">
+                    </select>
+
                     <select ng-multiple="multiple" ng-model="frmInclusao.animais" ng-options="animal.nome as animal.nome for animal in listaAnimais">
+                    </select>
+
+
+                    <select  
+                            ng-required="true" 
+                            ng-model="selectedValues.name" 
+                            ng-options="value.name for value in values">
                     </select>
 
 

@@ -80,8 +80,8 @@ public class AnimalDao {
         }
     }
 
-    public static ArrayList<Animal> getAnimaisPorFicha(Ficha ficha) {
-        ArrayList<Animal> animais = new ArrayList<>();
+    public static ArrayList<Integer> getAnimaisPorFicha(Ficha ficha) {
+        ArrayList<Integer> animais = new ArrayList<>();
 
         String sql = "select distinct a.*\n"
                 + "from animal a\n"
@@ -96,9 +96,8 @@ public class AnimalDao {
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Animal animal = new Animal();
-                animal.setId(rs.getInt("id"));
-                animal.setNome(rs.getString("nome"));
+                Integer animal = 0;
+                animal = rs.getInt("id");
                 animais.add(animal);
             }
         } catch (SQLException ex) {
@@ -124,13 +123,13 @@ public class AnimalDao {
         }
         
         //insert
-        ArrayList<Animal> animais = ficha.getAnimais();
-        for (Animal animal : animais) {
+        ArrayList<Integer> animais = ficha.getAnimais();
+        for (Integer animal : animais) {
             sqlFicha = "insert into animal_ficha values (?,?)";
             try {
                 Connection conexao = FabricaConexao.getConexao();
                 PreparedStatement ps = conexao.prepareStatement(sqlFicha);
-                ps.setInt(1, animal.getId());
+                ps.setInt(1, animal);
                 ps.setInt(2, ficha.getId());
                 ps.execute();
             } catch (SQLException ex) {

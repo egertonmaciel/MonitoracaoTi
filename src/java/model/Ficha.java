@@ -8,10 +8,18 @@ public class Ficha {
     String dataRegistro;
     boolean status;
     String observacao;
-    ArrayList<Animal> animais;
-//    ArrayList<String> animais;
+//    ArrayList<Animal> animais; // não foi possível utilizar o objeto pois no angular o select não reconhece o objeto no ng-model para selecionar os valores já sejecionados quando edita uma ficha.
+    ArrayList<Integer> animais;
 
     public Ficha() {
+    }
+
+    public ArrayList<Integer> getAnimais() {
+        return animais;
+    }
+
+    public void setAnimais(ArrayList<Integer> animais) {
+        this.animais = animais;
     }
 
     public Integer getId() {
@@ -46,13 +54,4 @@ public class Ficha {
         this.observacao = observacao;
     }
 
-    public ArrayList<Animal> getAnimais() {
-        return animais;
-    }
-
-    public void setAnimais(ArrayList<Animal> animais) {
-        this.animais = animais;
-    }
-
-    
 }
