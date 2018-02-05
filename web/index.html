@@ -63,34 +63,8 @@
                     <label>Observação</label>
                     <input class="form-control" type="text" ng-model="frmInclusao.observacao">
                     <label>Animais</label>
-
-                    <!--                    <select class="form-control" multiple="multiple" ng-model="frmInclusao.animais">
-                                            <option ng-repeat="animal in listaAnimais" ng-value="animal" ng-selected="{{true}}" >{{animal.nome}}</option>
-                                        </select>-->
-
-                    <!--                    <select class="form-control" multiple="multiple" ng-model="frmInclusao.animais">
-                                            <option ng-repeat="animal in listaAnimais" ng-value="animal" ng-selected="{{true}}" >{{animal.nome}}</option>
-                                        </select>-->
-
-<!--                    <select id="animais" multiple ng-model="frmInclusao.animais" ng-options="animal as animal.nome for animal in listaAnimais">
-                    </select>-->
-                    
-                    <select multiple ng-model="frmInclusao.animais" ng-options="animal.id as animal.nome for animal in listaAnimais">
+                    <select class="form-control" multiple ng-model="frmInclusao.animais" ng-options="animal.id as animal.nome for animal in listaAnimais">
                     </select>
-
-                    <select ng-multiple="multiple" ng-model="frmInclusao.animais" ng-options="animal.nome as animal.nome for animal in listaAnimais">
-                    </select>
-
-
-                    <select  
-                            ng-required="true" 
-                            ng-model="selectedValues.name" 
-                            ng-options="value.name for value in values">
-                    </select>
-
-
-                    <pre>animais = {{frmInclusao.animais| json}}</pre><br/>
-
                     <br>
                     <button class="btn btn-default ls-btn-sm" ng-click="salvarFicha();" href="#" role="button">Salvar</button>
                     <button class="btn btn-default ls-btn-sm" ng-click="formularioAtivo = false;" href="#" role="button">Cancelar</button>
