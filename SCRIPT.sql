@@ -14,8 +14,7 @@ CREATE TABLE  `crud_fichas`.`ficha` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `dt_cadastro` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` int(10) unsigned NOT NULL DEFAULT '0',
-  `observacao` varchar(300) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
+  `observacao` varchar(300) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `crud_fichas`.`animal_ficha`;
