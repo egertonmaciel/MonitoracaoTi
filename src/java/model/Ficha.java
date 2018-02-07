@@ -8,7 +8,6 @@ public class Ficha {
     String dataRegistro;
     boolean status;
     String observacao;
-//    ArrayList<Animal> animais; // não foi possível utilizar o objeto pois no angular o select não reconhece o objeto no ng-model para selecionar os valores já sejecionados quando edita uma ficha.
     ArrayList<Integer> animais;
 
     public Ficha() {
@@ -53,5 +52,5 @@ public class Ficha {
     public void setObservacao(String observacao) {
         this.observacao = observacao;
     }
-
+    
 }

@@ -7,22 +7,12 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
     $scope.nomeRotuloFormularioAnimal;
     $scope.listaFichas = [];
     $scope.listaAnimais = [];
-    $scope.animalSelecionado = {"id": 0, "nome": ""};
     $scope.filtroPorId = false;
     $scope.formularioAtivo = false;
     $scope.formularioEditarAtivo = false;
     $scope.formularioAtivoAnimal = false;
     $scope.checkAtivo = true;
     $scope.dataAtiva = true;
-
-    $scope.data = {
-        model: null,
-        availableOptions: [
-            {value: {nome: 'Galinha', id: 3}},
-            {value: {nome: 'Galinha2', id: 4}}
-        ]
-    };
-
 
     $scope.ativaAba = function (aba) {
         $scope.abaFicha = (aba === 'abaFicha');
@@ -55,13 +45,14 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
             $scope.fim = $scope.dataFim + ' 23:59:59';
         }
 
-        if ($scope.filtroPorId) {
+        if ($scope.filtroPorId && $scope.id) {
             $scope.idFiltro = $scope.id;
         }
 
 
 
-        $scope.url = '/CrudFichas/webresources/CrudFichas/fichas/' + $scope.idFiltro + '/' + $scope.inicio + '/' + $scope.fim;
+//        $scope.url = '/CrudFichas/webresources/CrudFichas/fichas/' + $scope.idFiltro + '/' + $scope.inicio + '/' + $scope.fim;
+        $scope.url = '/CrudFichas/webresources/ficha/listar/' + $scope.idFiltro + '/' + $scope.inicio + '/' + $scope.fim;
 //        if ($scope.filtroPorId) {
 //            $scope.url = '/CrudFichas/webresources/CrudFichas/fichaPorId/' + $scope.id;
 //        }
@@ -77,7 +68,8 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
     };
 
     $scope.salvarFicha = function () {
-        $scope.url = '/CrudFichas/webresources/CrudFichas/salvarFicha/';
+//        $scope.url = '/CrudFichas/webresources/CrudFichas/salvarFicha/';
+        $scope.url = '/CrudFichas/webresources/ficha/salvar/';
         console.log($scope.frmInclusao);
         console.log($scope.frmInclusao.animais);
         $http.post($scope.url, $scope.frmInclusao).then(function (response) {
@@ -90,7 +82,8 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
     };
 
     $scope.excluirFicha = function (ficha) {
-        $scope.url = '/CrudFichas/webresources/CrudFichas/excluirFicha/' + ficha.id;
+//        $scope.url = '/CrudFichas/webresources/CrudFichas/excluirFicha/' + ficha.id;
+        $scope.url = '/CrudFichas/webresources/ficha/excluir/' + ficha.id;
         $http({
             url: $scope.url,
             method: 'GET'
@@ -109,33 +102,6 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
         $scope.frmInclusao.status = ficha.status;
         $scope.frmInclusao.observacao = ficha.observacao;
         $scope.frmInclusao.animais = ficha.animais;
-
-        $scope.data = {selected: 'Mula'};
-        console.log($scope.frmInclusao);
-        console.log($scope.frmInclusao.animais);
-
-        $scope.values = [
-            17,
-            21
-        ];
-
-        $scope.valuess = [
-            {
-                "id": 21,
-                "name": "Mula"
-            },
-            {
-                "id": 22,
-                "name": "asdfas"
-            }
-        ];
-        $scope.selectedValues = {id: 2, name: 'two'};
-
-
-
-
-
-
     };
 
     $scope.novaFicha = function () {
@@ -148,7 +114,8 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
 
     $scope.carregarAnimais = function () {
         $http({
-            url: '/CrudFichas/webresources/CrudFichas/animais/',
+//            url: '/CrudFichas/webresources/CrudFichas/animais/',
+            url: '/CrudFichas/webresources/animal/listar/',
             method: 'GET'
         }).then(function (resposta) {
 //            console.log(resposta);
@@ -165,7 +132,7 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
     };
 
     $scope.salvarAnimal = function () {
-        $scope.url = '/CrudFichas/webresources/CrudFichas/salvarAnimal/';
+        $scope.url = '/CrudFichas/webresources/animal/salvar/';
         $http.post($scope.url, $scope.frmInclusaoAnimal, $scope.retorno).then(function (response) {
             $scope.carregarAnimais();
             console.log("sucesso");
@@ -182,7 +149,7 @@ angular.module("crudFichas", []).controller("Controller", function ($scope, $htt
     };
 
     $scope.deletarAnimal = function (animal) {
-        $scope.url = '/CrudFichas/webresources/CrudFichas/deletarAnimal/';
+        $scope.url = '/CrudFichas/webresources/animal/excluir/';
         $http.post($scope.url, animal, $scope.retorno).then(
                 function (response) {
                     $scope.carregarAnimais();

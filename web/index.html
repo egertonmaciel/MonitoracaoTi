@@ -43,8 +43,8 @@
                     <label ng-hide="filtroPorId">Data Inicio</label> <input ng-hide="filtroPorId" ng-model="dataInicio" type="date">
                     <label ng-hide="filtroPorId">Data Fim</label> <input ng-hide="filtroPorId" ng-model="dataFim" type="date">
                     <label ng-show="filtroPorId">Id</label> <input ng-show="filtroPorId" ng-model="id" type="number">
-                    <button class="btn btn-primary btn-xs col-2" ng-click="carregarFichas();"  href="#" role="button">Filtrar</button>
-                    <button class="btn bg-success btn-xs col-sm-2" ng-click="novaFicha()" href="#" role="button">Novo</button>
+                    <button class="btn btn-primary btn-xs col-1" ng-click="carregarFichas();"  href="#" role="button">Filtrar</button>
+                    <button class="btn bg-success btn-xs col-sm-1" ng-click="novaFicha()" href="#" role="button">Novo</button>
                 </div>
             </div>
 
@@ -54,9 +54,9 @@
                 <div class="card-header">{{nomeRotuloFormulario}}</div>
                 <div class="card-body">
                     <label>Id</label>
-                    <input class="form-control" type="text" ng-disabled="true" ng-model="frmInclusao.id">                  
+                    <input class="form-control col-2" type="text" ng-disabled="true" ng-model="frmInclusao.id">                  
                     <label>Data</label>
-                    <input class="form-control" type="text" ng-disabled="!dataAtiva" ng-model="frmInclusao.dataRegistro">
+                    <input class="form-control col-sm-3" type="text" ng-disabled="!dataAtiva" ng-model="frmInclusao.dataRegistro">
                     <label>Ativo</label>
                     <input type="checkbox" ng-model="frmInclusao.status">
                     <br>
@@ -79,6 +79,7 @@
                         <th>ID</th>
                         <th>DATA</th>
                         <th>STATUS</th>
+                        <th>OBS</th>
                         <th>ANIMAIS</th>
                         <th>AÇÃO</th>
                     </tr>
@@ -88,6 +89,7 @@
                         <td>{{ficha.id}}</td>
                         <td>{{ficha.dataRegistro}}</td>
                         <td>{{ficha.status}}</td>
+                        <td>{{ficha.observacao}}</td>
                         <td>{{ficha.animais.length}}</td>
                         <td>
                             <button class="btn btn-info ls-btn-sm" ng-click="editarFicha(ficha);" href="#" role="button">Editar</button>

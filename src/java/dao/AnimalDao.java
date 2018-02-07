@@ -13,7 +13,7 @@ import util.FabricaConexao;
 
 public class AnimalDao {
 
-    public ArrayList<Animal> listarTodos() {
+    public ArrayList<Animal> listar() {
         ArrayList<Animal> animais = new ArrayList<>();
         try {
             Connection conexao = FabricaConexao.getConexao();
@@ -31,19 +31,6 @@ public class AnimalDao {
             //FabricaConexao.fecharConexao();
         }
         return animais;
-    }
-
-    public void inserir(Animal animal) {
-        try {
-            Connection conexao = FabricaConexao.getConexao();
-            PreparedStatement ps = conexao.prepareStatement("insert into animal values (null,?)");
-            ps.setString(1, animal.getNome());
-            ps.execute();
-        } catch (SQLException ex) {
-            Logger.getLogger(AnimalDao.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            //FabricaConexao.fecharConexao();
-        }
     }
 
     public void salvar(Animal animal) {
@@ -64,7 +51,20 @@ public class AnimalDao {
         }
     }
 
-    public void deletar(Animal animal) {
+    public void inserir(Animal animal) {
+        try {
+            Connection conexao = FabricaConexao.getConexao();
+            PreparedStatement ps = conexao.prepareStatement("insert into animal values (null,?)");
+            ps.setString(1, animal.getNome());
+            ps.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(AnimalDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            //FabricaConexao.fecharConexao();
+        }
+    }
+
+    public void excluir(Animal animal) {
         String sql = "delete from animal\n"
                 + "where id = ?";
         try {
@@ -91,8 +91,7 @@ public class AnimalDao {
         try {
             Connection conexao = FabricaConexao.getConexao();
             PreparedStatement ps = conexao.prepareStatement(sql);
-//            ps.setInt(ficha.getId(), 1);
-            ps.setInt(1,ficha.getId());
+            ps.setInt(1, ficha.getId());
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -121,7 +120,7 @@ public class AnimalDao {
         } finally {
             //FabricaConexao.fecharConexao();
         }
-        
+
         //insert
         ArrayList<Integer> animais = ficha.getAnimais();
         for (Integer animal : animais) {

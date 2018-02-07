@@ -14,7 +14,7 @@ public class ApplicationConfig extends Application {
     }
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(service.AnimalService.class);
-        resources.add(service.CrudFichasService.class);
+        resources.add(service.FichaService.class);
     }
     
 }
