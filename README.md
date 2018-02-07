@@ -2,4 +2,16 @@
 
 Lista de Fichas:
 
-![Fichas](egertonmaciel/CrudFichas/fichas.png)
+![](Docs/fichas.png)
+
+Lista de Animais:
+
+![](Docs/animais.png)
+
+Formulario Ficha:
+
+![](Docs/editarFicha.png)
+
+Formulario Animal:
+
+![](Docs/editarAnimal.png)
