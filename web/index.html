@@ -94,6 +94,7 @@
                         <td>
                             <button class="btn btn-info ls-btn-sm" ng-click="editarFicha(ficha);" href="#" role="button">Editar</button>
                             <button class="btn btn-danger ls-btn-sm" ng-click="excluirFicha(ficha);" href="#" role="button">Excluir</button>
+                            
                         </td>
                     </tr>
                 </tbody>
@@ -117,6 +118,7 @@
             <button class="btn bg-success btn-xs col-sm-3" ng-hide="formularioAtivoAnimal" ng-click="novoAnimal()" href="#" role="button">Novo</button>
             <br ng-hide="formularioAtivoAnimal">
             <br>
+             {{frmInclusaoAnimal.nome}}
             <table class="table col-sm-1">
                 <thead class="thead-dark">
                     <tr>
@@ -136,6 +138,7 @@
                     </tr>
                 </tbody>
             </table>
+           
         </div>
     </body>
 </html>

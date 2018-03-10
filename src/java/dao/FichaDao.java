@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Ficha;
-import util.FabricaConexao;
+import util.Conexao;
 
 public class FichaDao {
 
@@ -29,7 +29,7 @@ public class FichaDao {
             sql = "select * from ficha where dt_cadastro between ? and ?";
         }
         try {
-            Connection conexao = FabricaConexao.getConexao();
+            Connection conexao = Conexao.getConexao();
             PreparedStatement ps = conexao.prepareStatement(sql);
 
             //valida filtros utilizados
@@ -73,7 +73,7 @@ public class FichaDao {
                 + "observacao = ?\n"
                 + "where id = ?";
         try {
-            Connection conexao = FabricaConexao.getConexao();
+            Connection conexao = Conexao.getConexao();
             PreparedStatement ps = conexao.prepareStatement(sqlFicha);
             ps.setString(1, ficha.getDataRegistro());
             ps.setBoolean(2, ficha.getStatus());
@@ -83,14 +83,14 @@ public class FichaDao {
         } catch (SQLException ex) {
             Logger.getLogger(FichaDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            FabricaConexao.fecharConexao();
+            Conexao.fecharConexao();
         }
         AnimalDao.setAnimaisPorFicha(ficha);
     }
 
     public void inserir(Ficha ficha) {
         try {
-            Connection conexao = FabricaConexao.getConexao();
+            Connection conexao = Conexao.getConexao();
             PreparedStatement ps = conexao.prepareStatement("insert into ficha values (null,now(),?,?)", Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, ficha.getStatus() == true ? 1 : 0);
             ps.setString(2, ficha.getObservacao());
@@ -104,14 +104,14 @@ public class FichaDao {
         } catch (SQLException ex) {
             Logger.getLogger(FichaDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            FabricaConexao.fecharConexao();
+            Conexao.fecharConexao();
         }
         AnimalDao.setAnimaisPorFicha(ficha);
     }
 
     public void excluir(int id) {
         try {
-            Connection conexao = FabricaConexao.getConexao();
+            Connection conexao = Conexao.getConexao();
             PreparedStatement ps = conexao.prepareStatement("delete from ficha where id = ?");
             ps.setInt(1, id);
             ps.execute();
@@ -122,7 +122,7 @@ public class FichaDao {
         }
 
         try {
-            Connection conexao = FabricaConexao.getConexao();
+            Connection conexao = Conexao.getConexao();
             PreparedStatement ps = conexao.prepareStatement("delete from animal_ficha where id_ficha = ?");
             ps.setInt(1, id);
             ps.execute();

@@ -9,27 +9,30 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Animal;
 import model.Ficha;
-import util.FabricaConexao;
+import util.Conexao;
 
 public class AnimalDao {
 
     public ArrayList<Animal> listar() {
-        ArrayList<Animal> animais = new ArrayList<>();
-        try {
-            Connection conexao = FabricaConexao.getConexao();
-            PreparedStatement ps = conexao.prepareStatement("select * from animal");
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Animal animal = new Animal();
-                animal.setId(rs.getInt("id"));
-                animal.setNome(rs.getString("nome"));
-                animais.add(animal);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(AnimalDao.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            //FabricaConexao.fecharConexao();
-        }
+//        ArrayList<Animal> animais = new ArrayList<>();
+//        try {
+//            Connection conexao = Conexao.getConexao();
+//            PreparedStatement ps = conexao.prepareStatement("select * from animal");
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                Animal animal = new Animal();
+//                animal.setId(rs.getInt("id"));
+//                animal.setNome(rs.getString("nome"));
+//                animais.add(animal);
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(AnimalDao.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//            //FabricaConexao.fecharConexao();
+//        }
+//        return animais;
+        
+        ArrayList<Animal> animais = Conexao.select("select * from animal", 2);
         return animais;
     }
 
@@ -39,7 +42,7 @@ public class AnimalDao {
                 + "nome = ?\n"
                 + "where id = ?";
         try {
-            Connection conexao = FabricaConexao.getConexao();
+            Connection conexao = Conexao.getConexao();
             PreparedStatement ps = conexao.prepareStatement(sql);
             ps.setString(1, animal.getNome());
             ps.setInt(2, animal.getId());
@@ -53,7 +56,7 @@ public class AnimalDao {
 
     public void inserir(Animal animal) {
         try {
-            Connection conexao = FabricaConexao.getConexao();
+            Connection conexao = Conexao.getConexao();
             PreparedStatement ps = conexao.prepareStatement("insert into animal values (null,?)");
             ps.setString(1, animal.getNome());
             ps.execute();
@@ -68,7 +71,7 @@ public class AnimalDao {
         String sql = "delete from animal\n"
                 + "where id = ?";
         try {
-            Connection conexao = FabricaConexao.getConexao();
+            Connection conexao = Conexao.getConexao();
             PreparedStatement ps = conexao.prepareStatement(sql);
             ps.setString(1, animal.getNome());
             ps.setInt(1, animal.getId());
@@ -89,7 +92,7 @@ public class AnimalDao {
                 + "where af.id_ficha = ?;";
 
         try {
-            Connection conexao = FabricaConexao.getConexao();
+            Connection conexao = Conexao.getConexao();
             PreparedStatement ps = conexao.prepareStatement(sql);
             ps.setInt(1, ficha.getId());
 
@@ -111,7 +114,7 @@ public class AnimalDao {
         // delete
         String sqlFicha = "delete from animal_ficha where id_ficha = ?";
         try {
-            Connection conexao = FabricaConexao.getConexao();
+            Connection conexao = Conexao.getConexao();
             PreparedStatement ps = conexao.prepareStatement(sqlFicha);
             ps.setInt(1, ficha.getId());
             ps.execute();
@@ -126,7 +129,7 @@ public class AnimalDao {
         for (Integer animal : animais) {
             sqlFicha = "insert into animal_ficha values (?,?)";
             try {
-                Connection conexao = FabricaConexao.getConexao();
+                Connection conexao = Conexao.getConexao();
                 PreparedStatement ps = conexao.prepareStatement(sqlFicha);
                 ps.setInt(1, animal);
                 ps.setInt(2, ficha.getId());
