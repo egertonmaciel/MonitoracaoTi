@@ -1,11 +1,13 @@
 package util;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,31 +43,82 @@ public class Conexao {
             conexao = null;
         }
     }
-    
-     public static ArrayList select(String sql, int qtdColumns) {
+
+    private static PreparedStatement setParametros(PreparedStatement ps, ArrayList<Object> parametros) throws SQLException {
+        if (parametros == null) {
+            return ps;
+        }
+        int i = 1;
+        for (Object p : parametros) {
+            if (p instanceof String) {
+                ps.setString(i++, (String) p);
+            } else if (p instanceof Date) {
+                ps.setTimestamp(i++, new Timestamp(((Date) p).getTime()));
+            } else if (p instanceof Integer) {
+                ps.setInt(i++, (Integer) p);
+            } else if (p instanceof Long) {
+                ps.setLong(i++, (Long) p);
+            } else if (p instanceof Double) {
+                ps.setDouble(i++, (Double) p);
+            } else if (p instanceof Float) {
+                ps.setFloat(i++, (Float) p);
+            } else if (p instanceof Boolean) {
+                ps.setBoolean(i++, (Boolean) p);
+            }
+        }
+        return ps;
+    }
+
+    public static boolean update(String sql) {
+        return update(sql, null);
+    }
+
+    public static boolean update(String sql, ArrayList<Object> parametros) {
+        boolean sucesso = false;
         Connection con;
-        PreparedStatement stm;
+        PreparedStatement ps;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = (Connection) DriverManager.getConnection(URL_CONEXAO, USUARIO, SENHA);
+            ps = (PreparedStatement) con.prepareStatement(sql);
+            ps = setParametros(ps, parametros);
+            sucesso = ps.execute();
+            ps.close();
+            con.close();
+        } catch (Exception e) {
+        }
+        return sucesso;
+    }
+
+    public static ArrayList<ArrayList<String>> select(String sql, int qtdColumns) {
+        return select(sql, qtdColumns, null);
+    }
+
+    public static ArrayList<ArrayList<String>> select(String sql, int qtdColumns, ArrayList<Object> parametros) {
+        Connection con;
+        PreparedStatement ps;
         ResultSet rs;
         ArrayList<ArrayList<String>> arrayPrincipal = new ArrayList<>();
         ArrayList<String> arraySecundario;
         try {
+            Class.forName("com.mysql.jdbc.Driver");
             con = (Connection) DriverManager.getConnection(URL_CONEXAO, USUARIO, SENHA);
-            stm = (PreparedStatement) con.prepareStatement(sql);
-            rs = stm.executeQuery();
+            ps = (PreparedStatement) con.prepareStatement(sql);
+            ps = setParametros(ps, parametros);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 rs.getString(qtdColumns);
                 arraySecundario = new ArrayList<>();
-                for (int i = 1; i <= qtdColumns; i++) {
-                    arraySecundario.add(rs.getString(i));
+                for (int y = 1; y <= qtdColumns; y++) {
+                    arraySecundario.add(rs.getString(y));
                 }
                 arrayPrincipal.add(arraySecundario);
             }
             rs.close();
-            stm.close();
+            ps.close();
             con.close();
         } catch (Exception e) {
         }
         return arrayPrincipal;
     }
-    
 }
