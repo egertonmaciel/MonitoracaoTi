@@ -1,13 +1,7 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Ficha;
 import util.Conexao;
 
@@ -15,122 +9,77 @@ public class FichaDao {
 
     public ArrayList<Ficha> listar(int id, String dataInicial, String dataFinal) {
         ArrayList<Ficha> fichas = new ArrayList<>();
+        ArrayList<Object> parametros = new ArrayList<>();
         String sql;
 
         if (id > 0) {
             sql = "select * from ficha where id = ?";
+            parametros.add(id);
         } else if (dataInicial.equals("0") && dataFinal.equals("0")) {//não selecionou nenhuma data
             sql = "select * from ficha";
         } else if (dataInicial.equals("0")) {// selecionou apenas a data final
             sql = "select * from ficha where dt_cadastro < ?";
+            parametros.add(dataFinal);
         } else if (dataFinal.equals("0")) {//selecionou apenas a data inicial
             sql = "select * from ficha where dt_cadastro > ?";
+            parametros.add(dataInicial);
         } else {//selecionou todas as datas
             sql = "select * from ficha where dt_cadastro between ? and ?";
+            parametros.add(dataInicial);
+            parametros.add(dataFinal);
         }
-        try {
-            Connection conexao = Conexao.getConexao();
-            PreparedStatement ps = conexao.prepareStatement(sql);
 
-            //valida filtros utilizados
-            if (id > 0) {
-                ps.setInt(1, id);
-            } else if (dataInicial.equals("0") && dataFinal.equals("0")) {//não selecionou nenhuma data
-                // nao adiciona ps
-            } else if (dataInicial.equals("0")) {// selecionou apenas a data final
-                ps.setString(1, dataFinal);
-            } else if (dataFinal.equals("0")) {//selecionou apenas a data inicial
-                ps.setString(1, dataInicial);
-            } else {//selecionou todas as datas
-                ps.setString(1, dataInicial);
-                ps.setString(2, dataFinal);
-            }
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Ficha ficha = new Ficha();
-                ficha.setId(rs.getInt("id"));
-                ficha.setDataRegistro(rs.getString("dt_cadastro"));
-                ficha.setStatus(rs.getInt("status") == 1);
-                ficha.setObservacao(rs.getString("observacao"));
-                ficha.setAnimais(AnimalDao.getAnimaisPorFicha(ficha));
-                System.out.println(ficha.getAnimais());
-                fichas.add(ficha);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(FichaDao.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            //FabricaConexao.fecharConexao();
+        ArrayList<ArrayList<String>> retorno = Conexao.select(sql, parametros);
+        for (ArrayList<String> r : retorno) {
+            Ficha ficha = new Ficha();
+            ficha.setId(Integer.valueOf(r.get(0)));
+            ficha.setDataRegistro(r.get(1));
+            ficha.setStatus(r.get(2).equals("1"));
+            ficha.setObservacao(r.get(3));
+            ficha.setAnimais(AnimalDao.getAnimaisPorFicha(ficha));
+            fichas.add(ficha);
         }
         return fichas;
     }
 
     public void salvar(Ficha ficha) {
-        String sqlFicha = "update ficha\n"
+        String sql = "update ficha\n"
                 + "set\n"
                 + "dt_cadastro = ?,\n"
                 + "status = ?,\n"
                 + "observacao = ?\n"
                 + "where id = ?";
-        try {
-            Connection conexao = Conexao.getConexao();
-            PreparedStatement ps = conexao.prepareStatement(sqlFicha);
-            ps.setString(1, ficha.getDataRegistro());
-            ps.setBoolean(2, ficha.getStatus());
-            ps.setString(3, ficha.getObservacao());
-            ps.setInt(4, ficha.getId());
-            ps.execute();
-        } catch (SQLException ex) {
-            Logger.getLogger(FichaDao.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            Conexao.fecharConexao();
-        }
+        ArrayList<Object> parametros = new ArrayList<>();
+        parametros.add(ficha.getDataRegistro());
+        parametros.add(ficha.getStatus());
+        parametros.add(ficha.getObservacao());
+        parametros.add(ficha.getId());
+        Conexao.update(sql, parametros);
         AnimalDao.setAnimaisPorFicha(ficha);
     }
 
     public void inserir(Ficha ficha) {
+        String sql = "insert into ficha values (null,now(),?,?)";
+        ArrayList<Object> parametros = new ArrayList<>();
+        parametros.add(ficha.getStatus() == true ? 1 : 0);
+        parametros.add(ficha.getObservacao());
+        ResultSet rs = Conexao.update(sql, parametros);
         try {
-            Connection conexao = Conexao.getConexao();
-            PreparedStatement ps = conexao.prepareStatement("insert into ficha values (null,now(),?,?)", Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, ficha.getStatus() == true ? 1 : 0);
-            ps.setString(2, ficha.getObservacao());
-            ps.execute();
-
-            ResultSet rs = ps.getGeneratedKeys();
             while (rs.next()) {
-                ficha.setId(rs.getInt(1));
+                ficha.setId(rs.getInt(0));
             }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(FichaDao.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            Conexao.fecharConexao();
+        } catch (Exception e) {
         }
         AnimalDao.setAnimaisPorFicha(ficha);
     }
 
     public void excluir(int id) {
-        try {
-            Connection conexao = Conexao.getConexao();
-            PreparedStatement ps = conexao.prepareStatement("delete from ficha where id = ?");
-            ps.setInt(1, id);
-            ps.execute();
-        } catch (SQLException ex) {
-            Logger.getLogger(FichaDao.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            //FabricaConexao.fecharConexao();
-        }
+        String sql = "delete from ficha where id = ?";
+        ArrayList<Object> parametros = new ArrayList<>();
+        parametros.add(id);
+        Conexao.update(sql, parametros);
 
-        try {
-            Connection conexao = Conexao.getConexao();
-            PreparedStatement ps = conexao.prepareStatement("delete from animal_ficha where id_ficha = ?");
-            ps.setInt(1, id);
-            ps.execute();
-        } catch (SQLException ex) {
-            Logger.getLogger(FichaDao.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            //FabricaConexao.fecharConexao();
-        }
+        sql = "delete from animal_ficha where id_ficha = ?";
+        Conexao.update(sql, parametros);
     }
-
 }

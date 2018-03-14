@@ -9,7 +9,7 @@ public class AnimalDao {
 
     public ArrayList<Animal> listar() {
         ArrayList<Animal> animais = new ArrayList<>();
-        ArrayList<ArrayList<String>> retorno = Conexao.select("select * from animal", 2);
+        ArrayList<ArrayList<String>> retorno = Conexao.select("select * from animal");
         for (ArrayList<String> a : retorno) {
             Animal animal = new Animal();
             animal.setId(Integer.valueOf(a.get(0)));
@@ -52,7 +52,7 @@ public class AnimalDao {
                 + "where af.id_ficha = ?;";
         ArrayList<Object> parametros = new ArrayList<>();
         parametros.add(ficha.getId());
-        ArrayList<ArrayList<String>> retorno = Conexao.select(sql, 1, parametros);
+        ArrayList<ArrayList<String>> retorno = Conexao.select(sql, parametros);
         for (ArrayList<String> r : retorno) {
             animais.add(Integer.valueOf(r.get(0)));
         }
