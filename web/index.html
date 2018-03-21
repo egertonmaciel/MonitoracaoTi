@@ -108,11 +108,31 @@
                         <td>{{ficha.animais.length}}</td>
                         <td>
                             <button class="btn btn-info ls-btn-sm" ng-click="editarFicha(ficha);" href="#modalCadastroFicha" data-toggle="modal" role="button">Editar</button>
-                            <button class="btn btn-danger ls-btn-sm" ng-click="excluirFicha(ficha);" href="#" role="button">Excluir</button>
+                            <button class="btn btn-danger ls-btn-sm" ng-click="confirmaExcluirFicha(ficha)" href="#modalExcluirFicha" data-toggle="modal" role="button">Excluir</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            
+            <div class="modal fade" id="modalExcluirFicha" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="card">
+                            <div class="card-header">Confirma a exclusão da Ficha?</div>
+                            <div class="card-body">
+                                <label>Id</label>
+                                <input class="form-control" type="text" ng-disabled="true" ng-model="ficha.id">
+                                <label>Obs</label>
+                                <input class="form-control" type="text" ng-disabled="true" ng-model="ficha.observacao">
+                                <br>
+                                <button class="btn btn-default ls-btn-sm" ng-click="excluirFicha();" href="#" data-dismiss="modal" role="button">Excluir</button>
+                                <button class="btn btn-default ls-btn-sm" ng-click="" href="#" data-dismiss="modal" role="button">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
 
         <div class="container col-sm-4 table-striped" ng-show="abaAnimal">
@@ -152,7 +172,7 @@
                         <td>{{animal.nome}}</td>
                         <td>
                             <button class="btn btn-info ls-btn-sm" ng-click="editarAnimal(animal);" href="#modalCadastroAnimal" data-toggle="modal" role="button">Editar</button>
-                            <button class="btn btn-danger ls-btn-sm" ng-click="confirmaDeletarAnimal(animal)" href="#modalExcluirAnimal" data-toggle="modal" role="button">Excluir</button>
+                            <button class="btn btn-danger ls-btn-sm" ng-click="confirmaExcluirAnimal(animal)" href="#modalExcluirAnimal" data-toggle="modal" role="button">Excluir</button>
                         </td>
                     </tr>
                 </tbody>
@@ -169,7 +189,7 @@
                                 <label>Nome</label>
                                 <input class="form-control" type="text" ng-disabled="true" ng-model="animal.nome">
                                 <br>
-                                <button class="btn btn-default ls-btn-sm" ng-click="deletarAnimal();" href="#" data-dismiss="modal" role="button">Excluir</button>
+                                <button class="btn btn-default ls-btn-sm" ng-click="excluirAnimal();" href="#" data-dismiss="modal" role="button">Excluir</button>
                                 <button class="btn btn-default ls-btn-sm" ng-click="" href="#" data-dismiss="modal" role="button">Cancelar</button>
                             </div>
                         </div>
