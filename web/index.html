@@ -4,19 +4,29 @@
         <title>Crud Fichas</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 
-        <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.1/angular.min.js"></script>-->
+        <!--        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+                <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.1/angular.min.js"></script>-->
 
-        <!--<script src="//code.angularjs.org/snapshot/angular.min.js"></script>-->
-        <!--<script src="//code.angularjs.org/1.6.8/angular.min.js"></script>-->
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.1/angular.min.js"></script>
+        
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link href="css/angular-toastr.min.css" rel="stylesheet">
+        
+        <script src="js/jquery.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script src="js/angular-toastr.tpls.js"></script>
+        
+        <script src="js/angular-animate.js"></script>
+        <script src="js/TweenMax.min.js"></script>
+        
 
         <script src="js/app.js"></script>
-        <!--<script src="js/api.js"></script>-->
 
     </head>
     <body ng-controller="controller">
@@ -44,34 +54,39 @@
                     <label ng-hide="filtroPorId">Data Fim</label> <input ng-hide="filtroPorId" ng-model="dataFim" type="date">
                     <label ng-show="filtroPorId">Id</label> <input ng-show="filtroPorId" ng-model="id" type="number">
                     <button class="btn btn-primary btn-xs col-1" ng-click="carregarFichas();"  href="#" role="button">Filtrar</button>
-                    <button class="btn bg-success btn-xs col-sm-1" ng-click="novaFicha()" href="#" role="button">Novo</button>
+                    <button class="btn bg-success btn-xs col-sm-1" ng-click="novaFicha()" href="#modalCadastroFicha" data-toggle="modal" role="button">Novo</button>
                 </div>
             </div>
 
             <br>
 
-            <div class="card" ng-show="formularioAtivo">
-                <div class="card-header">{{nomeRotuloFormulario}}</div>
-                <div class="card-body">
-                    <label>Id</label>
-                    <input class="form-control col-2" type="text" ng-disabled="true" ng-model="frmInclusao.id">                  
-                    <label>Data</label>
-                    <input class="form-control col-sm-3" type="text" ng-disabled="!dataAtiva" ng-model="frmInclusao.dataRegistro">
-                    <label>Ativo</label>
-                    <input type="checkbox" ng-model="frmInclusao.status">
-                    <br>
-                    <label>Observação</label>
-                    <input class="form-control" type="text" ng-model="frmInclusao.observacao">
-                    <label>Animais</label>
-                    <select class="form-control" multiple ng-model="frmInclusao.animais" ng-options="animal.id as animal.nome for animal in listaAnimais">
-                    </select>
-                    <br>
-                    <button class="btn btn-default ls-btn-sm" ng-click="salvarFicha();" href="#" role="button">Salvar</button>
-                    <button class="btn btn-default ls-btn-sm" ng-click="formularioAtivo = false;" href="#" role="button">Cancelar</button>
+
+            <div class="modal fade" id="modalCadastroFicha" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="card">
+                            <div class="card-header">{{nomeRotuloFormulario}}</div>
+                            <div class="card-body">
+                                <label>Id</label>
+                                <input class="form-control" type="text" ng-disabled="true" ng-model="ficha.id">                  
+                                <label>Data</label>
+                                <input class="form-control" type="text" ng-disabled="!dataAtiva" ng-model="ficha.dataRegistro">
+                                <label>Ativo</label>
+                                <input type="checkbox" ng-model="ficha.status">
+                                <br>
+                                <label>Observação</label>
+                                <input class="form-control" type="text" ng-model="ficha.observacao">
+                                <label>Animais</label>
+                                <select class="form-control" multiple ng-model="ficha.animais" ng-options="animal.id as animal.nome for animal in listaAnimais">
+                                </select>
+                                <br>
+                                <button class="btn btn-default ls-btn-sm" ng-click="salvarFicha();" href="#" data-dismiss="modal" role="button">Salvar</button>
+                                <button class="btn btn-default ls-btn-sm" ng-click="" href="#" data-dismiss="modal" role="button">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <br ng-show="formularioAtivo">
 
             <table class="table table-striped">
                 <thead class="thead-dark">
@@ -92,9 +107,8 @@
                         <td>{{ficha.observacao}}</td>
                         <td>{{ficha.animais.length}}</td>
                         <td>
-                            <button class="btn btn-info ls-btn-sm" ng-click="editarFicha(ficha);" href="#" role="button">Editar</button>
+                            <button class="btn btn-info ls-btn-sm" ng-click="editarFicha(ficha);" href="#modalCadastroFicha" data-toggle="modal" role="button">Editar</button>
                             <button class="btn btn-danger ls-btn-sm" ng-click="excluirFicha(ficha);" href="#" role="button">Excluir</button>
-                            
                         </td>
                     </tr>
                 </tbody>
@@ -102,23 +116,28 @@
         </div>
 
         <div class="container col-sm-4 table-striped" ng-show="abaAnimal">
-            <div class="card" ng-show="formularioAtivoAnimal">
-                <div class="card-header">{{nomeRotuloFormularioAnimal}}</div>
-                <div class="card-body">
-                    <label>Id</label>
-                    <input class="form-control" type="text" ng-disabled="true" ng-model="frmInclusaoAnimal.id">
-                    <label>Nome</label>
-                    <input class="form-control" type="text" ng-model="frmInclusaoAnimal.nome">
-                    <br>
-                    <button class="btn btn-default ls-btn-sm" ng-click="salvarAnimal();" href="#" role="button">Salvar</button>
-                    <button class="btn btn-default ls-btn-sm" ng-click="formularioAtivoAnimal = false;" href="#" role="button">Cancelar</button>
+            <div class="modal fade" id="modalCadastroAnimal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="card">
+                            <div class="card-header">{{nomeRotuloFormularioAnimal}}</div>
+                            <div class="card-body">
+                                <label>Id</label>
+                                <input class="form-control" type="text" ng-disabled="true" ng-model="animal.id">
+                                <label>Nome</label>
+                                <input class="form-control" type="text" ng-model="animal.nome">
+                                <br>
+                                <button class="btn btn-default ls-btn-sm" ng-click="salvarAnimal();" href="#" data-dismiss="modal" role="button">Salvar</button>
+                                <button class="btn btn-default ls-btn-sm" ng-click="" href="#" data-dismiss="modal" role="button">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <button class="btn bg-success btn-xs col-sm-3" ng-hide="formularioAtivoAnimal" ng-click="novoAnimal()" href="#" role="button">Novo</button>
-            <br ng-hide="formularioAtivoAnimal">
-            <br>
-             {{frmInclusaoAnimal.nome}}
+            <button class="btn bg-success btn-xs col-sm-3" ng-click="novoAnimal()" href="#modalCadastroAnimal" data-toggle="modal" role="button">Novo</button>
+
+            <br><br>
             <table class="table col-sm-1">
                 <thead class="thead-dark">
                     <tr>
@@ -132,13 +151,35 @@
                         <td>{{animal.id}}</td>
                         <td>{{animal.nome}}</td>
                         <td>
-                            <button class="btn btn-info ls-btn-sm" ng-click="editarAnimal(animal);" href="#" role="button">Editar</button>
-                            <button class="btn btn-danger ls-btn-sm" ng-click="deletarAnimal(animal);" href="#" role="button">Excluir</button>
+                            <button class="btn btn-info ls-btn-sm" ng-click="editarAnimal(animal);" href="#modalCadastroAnimal" data-toggle="modal" role="button">Editar</button>
+                            <button class="btn btn-danger ls-btn-sm" ng-click="confirmaDeletarAnimal(animal)" href="#modalExcluirAnimal" data-toggle="modal" role="button">Excluir</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-           
+
+            <div class="modal fade" id="modalExcluirAnimal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="card">
+                            <div class="card-header">Confirma a exclusão do Animal?</div>
+                            <div class="card-body">
+                                <label>Id</label>
+                                <input class="form-control" type="text" ng-disabled="true" ng-model="animal.id">
+                                <label>Nome</label>
+                                <input class="form-control" type="text" ng-disabled="true" ng-model="animal.nome">
+                                <br>
+                                <button class="btn btn-default ls-btn-sm" ng-click="deletarAnimal();" href="#" data-dismiss="modal" role="button">Excluir</button>
+                                <button class="btn btn-default ls-btn-sm" ng-click="" href="#" data-dismiss="modal" role="button">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
+
     </body>
 </html>
