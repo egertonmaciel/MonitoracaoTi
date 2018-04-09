@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import model.Animal;
 import model.Ficha;
 import util.Conexao;
+import util.Registro;
 
 public class AnimalDao {
 
     public ArrayList<Animal> listar() {
         ArrayList<Animal> animais = new ArrayList<>();
-        ArrayList<ArrayList<String>> retorno = Conexao.select("select * from animal");
-        for (ArrayList<String> a : retorno) {
+        ArrayList<Registro> retorno = Conexao.select("select * from animal");
+        for (Registro a : retorno) {
             Animal animal = new Animal();
-            animal.setId(Integer.valueOf(a.get(0)));
-            animal.setNome(a.get(1));
+            animal.setId(Integer.valueOf(a.getValores().get(0)));
+            animal.setNome(a.getValores().get(1));
             animais.add(animal);
         }
         return animais;
@@ -31,17 +32,13 @@ public class AnimalDao {
     }
 
     public void inserir(Animal animal) {
-        ArrayList<Object> parametros = new ArrayList<>();
-        parametros.add(animal.getNome());
-        Conexao.update("insert into animal values (null,?)", parametros);
+        Conexao.update("insert into animal values (null,?)", new Object[]{animal.getNome()});
     }
 
     public void excluir(Animal animal) {
         String sql = "delete from animal\n"
                 + "where id = ?";
-        ArrayList<Object> parametros = new ArrayList<>();
-        parametros.add(animal.getId());
-        Conexao.update(sql, parametros);
+        Conexao.update(sql, new Object[]{animal.getId()});
     }
 
     public static ArrayList<Integer> getAnimaisPorFicha(Ficha ficha) {
@@ -50,11 +47,9 @@ public class AnimalDao {
                 + "from animal a\n"
                 + "join animal_ficha af on af.id_animal = a.id\n"
                 + "where af.id_ficha = ?;";
-        ArrayList<Object> parametros = new ArrayList<>();
-        parametros.add(ficha.getId());
-        ArrayList<ArrayList<String>> retorno = Conexao.select(sql, parametros);
-        for (ArrayList<String> r : retorno) {
-            animais.add(Integer.valueOf(r.get(0)));
+        ArrayList<Registro> retorno = Conexao.select(sql, new Object[]{ficha.getId()});
+        for (Registro r : retorno) {
+            animais.add(Integer.valueOf(r.getValores().get(0)));
         }
         return animais;
     }

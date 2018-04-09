@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import model.Ficha;
 import util.Conexao;
+import util.Registro;
 
 public class FichaDao {
 
@@ -29,13 +30,13 @@ public class FichaDao {
             parametros.add(dataFinal);
         }
 
-        ArrayList<ArrayList<String>> retorno = Conexao.select(sql, parametros);
-        for (ArrayList<String> r : retorno) {
+        ArrayList<Registro> retorno = Conexao.select(sql, parametros);
+        for (Registro r : retorno) {
             Ficha ficha = new Ficha();
-            ficha.setId(Integer.valueOf(r.get(0)));
-            ficha.setDataRegistro(r.get(1));
-            ficha.setStatus(r.get(2).equals("1"));
-            ficha.setObservacao(r.get(3));
+            ficha.setId(Integer.valueOf(r.getValores().get(0)));
+            ficha.setDataRegistro(r.getValores().get(1));
+            ficha.setStatus(r.getValores().get(2).equals("1"));
+            ficha.setObservacao(r.getValores().get(3));
             ficha.setAnimais(AnimalDao.getAnimaisPorFicha(ficha));
             fichas.add(ficha);
         }
@@ -63,12 +64,9 @@ public class FichaDao {
         ArrayList<Object> parametros = new ArrayList<>();
         parametros.add(ficha.getStatus() == true ? 1 : 0);
         parametros.add(ficha.getObservacao());
-        ResultSet rs = Conexao.update(sql, parametros);
-        try {
-            while (rs.next()) {
-                ficha.setId(rs.getInt(0));
-            }
-        } catch (Exception e) {
+        ArrayList<Integer> id = Conexao.update(sql, parametros);
+        for (Integer i : id) {
+            ficha.setId(i);
         }
         AnimalDao.setAnimaisPorFicha(ficha);
     }
