@@ -16,5 +16,4 @@ public class ApplicationConfig extends Application {
         resources.add(service.AnimalService.class);
         resources.add(service.FichaService.class);
     }
-    
 }

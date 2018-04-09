@@ -10,6 +10,11 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author Egerton Maciel
+ */
+
 public class Conexao {
 
     private static final String URL_CONEXAO = "jdbc:mysql://localhost/crud_fichas";
@@ -28,7 +33,11 @@ public class Conexao {
         return update(sql, null, parametros2);
     }
 
+
     public static ArrayList<Integer> update(String sql, ArrayList<Object> parametros, Object[] parametros2) {
+
+//    public static ArrayList<Integer> update(String sql, ArrayList<Object> parametros) {
+
         ArrayList<Integer> resultado = new ArrayList<>();
         Connection con;
         PreparedStatement ps;
@@ -84,7 +93,11 @@ public class Conexao {
             }
             rs = ps.executeQuery();
             while (rs.next()) {
+//<<<<<<< HEAD
                 Registro registro = new Registro();
+//=======
+//                arraySecundario = new ArrayList<>();
+//>>>>>>> origin/master
                 for (int y = 1; y <= rs.getMetaData().getColumnCount(); y++) {
                     registro.addItem(rs.getString(y), rs.getMetaData().getColumnLabel(y));
                 }
