@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class Conexao {
 
-    private static final String URL_CONEXAO = "jdbc:mysql://localhost/crud_fichas";
+    private static final String URL_CONEXAO = "jdbc:mysql://localhost/monitoracao_ti";
     private static final String USUARIO = "root";
     private static final String SENHA = "55555";
 
